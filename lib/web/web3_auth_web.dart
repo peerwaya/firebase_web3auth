@@ -144,7 +144,9 @@ class LogoutOptions {
 class OpenloginAdapterJsParams {
   external AdapterSettingsJS get adapterSettings;
   external factory OpenloginAdapterJsParams(
-      {AdapterSettingsJS adapterSettings, dynamic privateKeyProvider});
+      {AdapterSettingsJS adapterSettings,
+      dynamic privateKeyProvider,
+      LoginSettingsJS? loginSettings});
 }
 
 @JS('OpenloginAdapter.OpenloginAdapter')
@@ -156,11 +158,53 @@ class OpenloginAdapterJs {
 @anonymous
 class AdapterSettingsJS {
   external String get network;
+  external String get uxMode;
   external LoginConfigJs get loginConfig;
+  external MFASettingsJs get mfaSettings;
 
-  external factory AdapterSettingsJS({
-    String network,
-    LoginConfigJs loginConfig,
+  external factory AdapterSettingsJS(
+      {String? uxMode,
+      String network,
+      LoginConfigJs loginConfig,
+      MFASettingsJs? mfaSettings});
+}
+
+@JS()
+@anonymous
+class MFAOptionJs {
+  external bool get enable;
+  external int get priority;
+  external bool get mandatory;
+
+  external factory MFAOptionJs({
+    bool enable,
+    int priority,
+    bool mandatory,
+  });
+}
+
+@JS()
+@anonymous
+class MFASettingsJs {
+  external MFAOptionJs? get deviceShareFactor;
+  external MFAOptionJs? get backUpShareFactor;
+  external MFAOptionJs? get socialBackupFactor;
+
+  external factory MFASettingsJs({
+    MFAOptionJs? deviceShareFactor,
+    MFAOptionJs? backUpShareFactor,
+    MFAOptionJs? socialBackupFactor,
+    MFAOptionJs? passwordFactor,
+  });
+}
+
+@JS()
+@anonymous
+class LoginSettingsJS {
+  external bool get mfaLevel;
+
+  external factory LoginSettingsJS({
+    String? mfaLevel,
   });
 }
 

@@ -1,8 +1,10 @@
+import 'package:web3auth_flutter/enums.dart';
 import 'package:web3auth_flutter/input.dart';
 import 'package:web3auth_flutter/output.dart';
 
 abstract class Web3AuthSDK {
-  Future<void> init(ChainConfig config, Web3AuthOptions options);
+  Future<void> init(ChainConfig config, Web3AuthOptions options,
+      {WebOptions? webOptions});
 
   Future<LoginResponse> login(LoginParams options);
 }
@@ -18,6 +20,11 @@ enum Web3AuthExceptionCode {
   network,
   alreadyInitialized,
   notInitialized
+}
+
+enum UXMode {
+  redirect,
+  popup,
 }
 
 class LoginResponse {
@@ -52,4 +59,43 @@ class ChainConfig {
     required this.ticker,
     required this.tickerName,
   });
+}
+
+class MFAOption {
+  final bool enable;
+  final int priority;
+  final bool mandatory;
+
+  MFAOption({
+    required this.enable,
+    required this.priority,
+    required this.mandatory,
+  });
+}
+
+class MFASettings {
+  MFAOption? deviceShareFactor;
+  MFAOption? backUpShareFactor;
+  MFAOption? socialBackupFactor;
+  MFAOption? passwordFactor;
+  MFASettings({
+    this.deviceShareFactor,
+    this.backUpShareFactor,
+    this.socialBackupFactor,
+    this.passwordFactor,
+  });
+}
+
+class LoginSettings {
+  MFALevel? mfaLevel;
+  LoginSettings({
+    this.mfaLevel,
+  });
+}
+
+class WebOptions {
+  MFASettings? mfaSettings;
+  LoginSettings? loginSettings;
+  UXMode? uxMode;
+  WebOptions({this.mfaSettings, this.uxMode, this.loginSettings});
 }

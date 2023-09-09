@@ -7,7 +7,8 @@ class Web3AuthSDKUnsupported extends Web3AuthSDK {
   static Web3AuthSDKUnsupported instance = Web3AuthSDKUnsupported._();
 
   @override
-  Future<void> init(ChainConfig config, Web3AuthOptions options) {
+  Future<void> init(ChainConfig config, Web3AuthOptions options,
+      {WebOptions? webOptions}) {
     // TODO: implement init
     throw UnimplementedError();
   }

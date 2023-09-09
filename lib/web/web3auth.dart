@@ -14,7 +14,8 @@ class Web3AuthSDKWeb extends Web3AuthSDK {
   late Web3AuthNoModalWeb _web3auth;
 
   @override
-  Future<void> init(ChainConfig config, Web3AuthOptions options) async {
+  Future<void> init(ChainConfig config, Web3AuthOptions options,
+      {WebOptions? webOptions}) async {
     try {
       final chainConfigWeb = ChainConfigWeb(
           chainId: config.chainId,
@@ -36,11 +37,63 @@ class Web3AuthSDKWeb extends Web3AuthSDK {
           config: SolanaPrivKeyProviderConfig(chainConfig: chainConfigWeb),
         ),
       );
+      MFASettingsJs? mfaSettingsJs;
+      LoginSettingsJS? loginSettingsJS;
+      if (webOptions != null) {
+        if (webOptions.loginSettings != null) {
+          loginSettingsJS = LoginSettingsJS(
+            mfaLevel: webOptions.loginSettings!.mfaLevel?.name,
+          );
+        }
+        if (webOptions.mfaSettings != null) {
+          MFAOptionJs? deviceShareFactor;
+          if (webOptions.mfaSettings?.deviceShareFactor != null) {
+            deviceShareFactor = MFAOptionJs(
+              enable: webOptions.mfaSettings!.deviceShareFactor!.enable,
+              priority: webOptions.mfaSettings!.deviceShareFactor!.priority,
+              mandatory: webOptions.mfaSettings!.deviceShareFactor!.mandatory,
+            );
+          }
+          MFAOptionJs? backUpShareFactor;
+          if (webOptions.mfaSettings?.backUpShareFactor != null) {
+            backUpShareFactor = MFAOptionJs(
+              enable: webOptions.mfaSettings!.backUpShareFactor!.enable,
+              priority: webOptions.mfaSettings!.backUpShareFactor!.priority,
+              mandatory: webOptions.mfaSettings!.backUpShareFactor!.mandatory,
+            );
+          }
+          MFAOptionJs? socialBackupFactor;
+          if (webOptions.mfaSettings?.socialBackupFactor != null) {
+            socialBackupFactor = MFAOptionJs(
+              enable: webOptions.mfaSettings!.socialBackupFactor!.enable,
+              priority: webOptions.mfaSettings!.socialBackupFactor!.priority,
+              mandatory: webOptions.mfaSettings!.socialBackupFactor!.mandatory,
+            );
+          }
+          MFAOptionJs? passwordFactor;
+          if (webOptions.mfaSettings?.passwordFactor != null) {
+            passwordFactor = MFAOptionJs(
+              enable: webOptions.mfaSettings!.passwordFactor!.enable,
+              priority: webOptions.mfaSettings!.passwordFactor!.priority,
+              mandatory: webOptions.mfaSettings!.passwordFactor!.mandatory,
+            );
+          }
+          mfaSettingsJs = MFASettingsJs(
+            deviceShareFactor: deviceShareFactor,
+            backUpShareFactor: backUpShareFactor,
+            socialBackupFactor: socialBackupFactor,
+            passwordFactor: passwordFactor,
+          );
+        }
+      }
       _web3auth.configureAdapter(
         OpenloginAdapterJs(
           OpenloginAdapterJsParams(
             privateKeyProvider: privateKeyProvider,
+            loginSettings: loginSettingsJS,
             adapterSettings: AdapterSettingsJS(
+              mfaSettings: mfaSettingsJs,
+              uxMode: webOptions?.uxMode?.name,
               network: options.network.name,
               loginConfig: LoginConfigJs(
                 jwt: JWTConfigJs(

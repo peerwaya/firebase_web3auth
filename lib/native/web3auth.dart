@@ -8,7 +8,8 @@ class Web3AuthSDKNative extends Web3AuthSDK {
   static Web3AuthSDKNative instance = Web3AuthSDKNative._();
 
   @override
-  Future<void> init(ChainConfig config, Web3AuthOptions options) async {
+  Future<void> init(ChainConfig config, Web3AuthOptions options,
+      {WebOptions? webOptions}) async {
     try {
       await Web3AuthFlutter.init(options);
     } catch (error) {
