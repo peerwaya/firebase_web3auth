@@ -72,9 +72,15 @@ class Web3AuthNoModalWeb {
 class LoginParamsJs {
   external Provider get loginProvider;
   external ExtraLoginParamsJs get extraLoginOptions;
+  external String? get redirectUrl;
+  external String? get appState;
+  external String? get curve;
   external factory LoginParamsJs({
     String loginProvider,
     ExtraLoginParamsJs extraLoginOptions,
+    String? redirectUrl,
+    String? appState,
+    String? curve,
   });
 }
 

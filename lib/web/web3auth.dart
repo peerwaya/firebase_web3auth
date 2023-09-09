@@ -121,6 +121,9 @@ class Web3AuthSDKWeb extends Web3AuthSDK {
           WalletAdapters.openlogin.name,
           LoginParamsJs(
             loginProvider: options.loginProvider.name,
+            redirectUrl: options.redirectUrl?.toString(),
+            curve: options.curve?.name,
+            appState: options.appState,
             extraLoginOptions: ExtraLoginParamsJs(
               domain: options.extraLoginOptions?.domain,
               verifierIdField: options.extraLoginOptions?.verifierIdField,
